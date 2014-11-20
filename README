@@ -1,0 +1,39 @@
+# Cargo Do
+
+Allows you to put multiple cargo commands on one line, e.g.
+
+```
+$ cargo do clean, update, build
+```
+
+## Using commas in your commands
+
+Since `cargo-do` uses commas to delimit commands, you have to be careful when 
+trying to run a command with a comma in it.
+
+For example, this command will not run properly:
+
+```
+$ cargo do update, bench --bench "why are there commas, here", build
+```
+
+It will be treated as if you did this:
+
+```
+$ cargo update
+$ cargo bench --bench "why are there commas
+$ cargo  here"
+$ cargo build
+```
+
+Which is obviously not what you want.
+
+Because of the magic of shell escaping, you have a couple choices on how to get around this:
+
+```
+$ cargo do bench --bench "why are there commas\, here"
+$ # or
+$ cargo do bench --bench why are there commas \\, here
+```
+
+However you want to do it, `cargo-do` will not delimit commands on an escaped comma.
