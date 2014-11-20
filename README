@@ -28,22 +28,22 @@ $ cargo --list | egrep "do$"
 
 ## Using commas in your commands
 
-Since `cargo-do` uses commas to delimit commands, you have to be careful when 
+Since `cargo-do` uses commas to delimit commands, you have to be careful when
 trying to run a command with a comma in it.
 
 For example, this command will not run properly:
 
 ```
-$ cargo do update, bench --bench "why are there commas, here", build
+$ cargo do update, build, bench --bench "why are there commas, here"
 ```
 
 It will be treated as if you did this:
 
 ```
 $ cargo update
-$ cargo bench --bench "why are there commas
-$ cargo  here"
 $ cargo build
+$ cargo bench --bench "why are there commas
+$ cargo here"
 ```
 
 Which is obviously not what you want.
@@ -52,7 +52,11 @@ Because of the magic of shell escaping, you have a couple choices on how to get 
 
 ```
 $ cargo do bench --bench "why are there commas\, here"
-$ # or
+```
+
+or
+
+```
 $ cargo do bench --bench why are there commas \\, here
 ```
 
