@@ -2,6 +2,26 @@
 
 Allows you to put multiple cargo commands on one line, e.g.
 
+## Installation
+
+I don't think there is an "official" way to install Cargo subcommands,
+but the easiest way is to put the generated `cargo-do` binary in the same
+directory as `cargo`. So, if you are on a *nix system, you could do the following:
+
+```
+$ git clone https://github.com/pwoolcoc/cargo-do
+$ cd cargo-do
+$ cargo build
+$ cp target/cargo-do $(dirname $(which cargo))/
+```
+
+Verify that it is correctly installed by checking that `do` is in the command list,
+that you can get by running:
+
+```
+$ cargo --list
+```
+
 ```
 $ cargo do clean, update, build
 ```
