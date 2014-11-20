@@ -60,10 +60,10 @@ fn extract_commands(input: String) -> Vec<String> {
 }
 
 fn main() {
-    let mut a = os::args();
-    // remove the binary name
-    let _ = a.remove(0);
-    let args = a.connect(" ");
+    let orig_args = os::args();
+    // remove the binary name "cargo-do", and the next 2 arguments,
+    // which are just "cargo" and "do"
+    let args = orig_args.slice_from(3).connect(" ");
     for command in extract_commands(args).iter() {
         // need to improve this, it assumes cargo is in our path..
         let status = Command::new("cargo")
