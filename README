@@ -23,7 +23,8 @@ Verify that it is correctly installed by checking that `do` is in the command li
 that you can get by running:
 
 ```
-$ cargo --list
+$ cargo --list | egrep "do$"
+    do
 ```
 
 ## Using commas in your commands
