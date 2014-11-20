@@ -19,8 +19,7 @@ $ cargo build
 $ cp target/cargo-do $(dirname $(which cargo))/
 ```
 
-Verify that it is correctly installed by checking that `do` is in the command list,
-that you can get by running:
+Verify that it is correctly installed by checking that `do` is in the command list:
 
 ```
 $ cargo --list | egrep "do$"
