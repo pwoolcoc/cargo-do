@@ -2,6 +2,10 @@
 
 Allows you to put multiple cargo commands on one line, e.g.
 
+```
+$ cargo do clean, update, build
+```
+
 ## Installation
 
 I don't think there is an "official" way to install Cargo subcommands,
@@ -20,10 +24,6 @@ that you can get by running:
 
 ```
 $ cargo --list
-```
-
-```
-$ cargo do clean, update, build
 ```
 
 ## Using commas in your commands
