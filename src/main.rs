@@ -3,45 +3,45 @@ use std::io::process::{Command,InheritFd,ExitStatus,ExitSignal};
 
 use self::State::{Quoted, Escaped, Normal};
 
-enum State {
-    Quoted(char),
+enum State<'a> {
+    Quoted(&'a str),
     Escaped,
     Normal
 }
 
-fn trimmed(s: &String) -> String {
-    from_str::<String>(s.trim_chars(' ')).unwrap()
+fn trimmed(s: &str) -> String {
+    from_str(s.trim()).unwrap()
 }
 
-fn extract_commands(input: String) -> Vec<String> {
+fn extract_commands<'a>(input: &'a str) -> Vec<String> {
     let mut state: State = Normal;
     let mut commands: Vec<String> = vec![];
-    let mut it = input.chars();
+    let mut it = input.graphemes(true);
     let mut s = String::new();
     loop {
         let c = match it.next() {
             Some(ch) => ch.clone(),
             None => {
-                commands.push(trimmed(&s));
+                commands.push(trimmed(s.as_slice()));
                 return commands;
             }
         };
         match state {
             Normal => {
                 match c {
-                    '\\' => {
+                    "\\" => {
                         state = Escaped;
                     },
-                    '\'' | '"' => {
+                    "'" | "\"" => {
                         state = Quoted(c);
-                        s.push(c);
+                        s.push_str(c);
                     },
-                    ',' => {
-                        commands.push(trimmed(&s));
+                    "," => {
+                        commands.push(trimmed(s.as_slice()));
                         s.clear();
                     },
                     _ => {
-                        s.push(c);
+                        s.push_str(c);
                     },
                 }
             },
@@ -49,22 +49,21 @@ fn extract_commands(input: String) -> Vec<String> {
                 if c == terminator {
                     state = Normal;
                 }
-                s.push(c);
+                s.push_str(c);
             },
             Escaped => {
                 state = Normal;
-                s.push(c);
+                s.push_str(c);
             },
         }
     }
 }
 
 fn main() {
-    let orig_args = os::args();
     // remove the binary name "cargo-do", and the next 2 arguments,
     // which are just "cargo" and "do"
-    let args = orig_args.slice_from(3).connect(" ");
-    for command in extract_commands(args).iter() {
+    let args = os::args().slice_from(3).connect(" ");
+    for command in extract_commands(args.as_slice()).iter() {
         // need to improve this, it assumes cargo is in our path..
         let status = Command::new("cargo")
                         .args(&[command])
