@@ -60,28 +60,41 @@ fn extract_commands<'a>(input: &'a str) -> Vec<String> {
 }
 
 fn main() {
-    // remove the binary name "cargo-do", and the next 2 arguments,
-    // which are just "cargo" and "do"
-    let args = os::args().slice_from(3).connect(" ");
-    for command in extract_commands(args.as_slice()).iter() {
-        // need to improve this, it assumes cargo is in our path..
-        let status = Command::new("cargo")
-                        .args(&[command])
-                        .stdin(InheritFd(0))
-                        .stdout(InheritFd(1))
-                        .stderr(InheritFd(2))
-                        .status();
-        match status {
-            Ok(ExitStatus(0)) => (),
-            Ok(ExitStatus(i)) => {
-                os::set_exit_status(i)
-            },
-            Ok(ExitSignal(i)) => {
-                os::set_exit_status(i)
-            },
-            Err(_) => {
-                os::set_exit_status(127)
-            },
+    // this gets invoked like this:
+    //
+    //   $ cargo-do cargo do [args]
+    //
+    // so we throw away the `cargo-do` and the `do`.
+    // But, we keep the `cargo`, because we don't want
+    // to just assume that `cargo` is the name of the cargo
+    // binary, nor do we want to assume that it is on our path
+    match os::args().as_slice() {
+        [_, ref binname, _, rest..] => {
+            let args = rest.connect(" ");
+            for command in extract_commands(args.as_slice()).iter() {
+                // need to improve this, it assumes cargo is in our path..
+                let status = Command::new(binname)
+                                .args(&[command])
+                                .stdin(InheritFd(0))
+                                .stdout(InheritFd(1))
+                                .stderr(InheritFd(2))
+                                .status();
+                match status {
+                    Ok(ExitStatus(0)) => (),
+                    Ok(ExitStatus(i)) => {
+                        os::set_exit_status(i)
+                    },
+                    Ok(ExitSignal(i)) => {
+                        os::set_exit_status(i)
+                    },
+                    Err(_) => {
+                        os::set_exit_status(127)
+                    },
+                }
+            }
+        },
+        _ => {
+            os::set_exit_status(127);
         }
     }
 }
