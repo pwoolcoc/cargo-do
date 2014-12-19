@@ -72,7 +72,6 @@ fn main() {
         [_, ref binname, _, rest..] => {
             let args = rest.connect(" ");
             for command in extract_commands(args.as_slice()).iter() {
-                // need to improve this, it assumes cargo is in our path..
                 let status = Command::new(binname)
                                 .args(&[command])
                                 .stdin(InheritFd(0))
