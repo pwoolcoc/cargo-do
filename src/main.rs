@@ -21,7 +21,9 @@ fn extract_commands(input: &str) -> Vec<String> {
     let mut s = String::new();
     loop {
         let c = match it.next() {
-            Some(ch) => ch.clone(),
+            Some(ch) => {
+                ch.clone()
+            }
             None => {
                 commands.push(trimmed(&s));
                 return commands;
@@ -84,17 +86,18 @@ fn main() {
             Ok(st) => {
                 if !st.success() {
                     match st.code() {
+                        Some(0) => (),
                         Some(i) => { exit(i); },
                         None => { exit(127); }
                     }
                 }
-
-                exit(0);
             },
             Err(_) => {
                 exit(127);
             },
         }
     }
+
+    exit(0);
 }
 
