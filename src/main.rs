@@ -1,5 +1,4 @@
 use std::env;
-// use std::io::process::{Command,InheritFd,ExitStatus,ExitSignal};
 use std::process::{exit, Command, Stdio};
 
 use self::State::{Quoted, Escaped, Normal};
@@ -65,18 +64,14 @@ fn extract_commands(input: &str) -> Vec<String> {
 fn main() {
     // this gets invoked like this:
     //
-    //   $ cargo-do cargo do [args]
+    //   $ cargo-do do [args]
     //
     // so we throw away the `cargo-do` and the `do`.
-    // But, we keep the `cargo`, because we don't want
-    // to just assume that `cargo` is the name of the cargo
-    // binary, nor do we want to assume that it is on our path
-    let mut args = env::args();
-    let binname = args.nth(1).unwrap();
-    let args = args.skip(1).collect::<Vec<_>>().connect(" ");
+    let args = env::args();
+    let args = args.skip(2).collect::<Vec<_>>().connect(" ");
 
     for command in extract_commands(&args).iter() {
-        let status = Command::new(&binname)
+        let status = Command::new("cargo")
                         .args(&[command])
                         .stdin(Stdio::inherit())
                         .stdout(Stdio::inherit())
