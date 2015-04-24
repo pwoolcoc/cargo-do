@@ -1,6 +1,6 @@
 use std::env;
 // use std::io::process::{Command,InheritFd,ExitStatus,ExitSignal};
-use std::process::{exit, Command, Stdio, ExitStatus};
+use std::process::{exit, Command, Stdio};
 
 use self::State::{Quoted, Escaped, Normal};
 
