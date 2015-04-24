@@ -71,8 +71,9 @@ fn main() {
     let args = args.skip(2).collect::<Vec<_>>().connect(" ");
 
     for command in extract_commands(&args).iter() {
+        let command: Vec<_> = command.split(' ').map(|s| s.trim()).collect();
         let status = Command::new("cargo")
-                        .args(&[command])
+                        .args(&command)
                         .stdin(Stdio::inherit())
                         .stdout(Stdio::inherit())
                         .stderr(Stdio::inherit())
