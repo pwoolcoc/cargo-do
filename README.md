@@ -1,5 +1,7 @@
 # Cargo Do
 
+[![Build Status](https://travis-ci.org/pwoolcoc/cargo-do.svg?branch=master)](https://travis-ci.org/pwoolcoc/cargo-do)
+
 Allows you to put multiple cargo commands on one line, e.g.
 
 ```
