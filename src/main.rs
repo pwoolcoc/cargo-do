@@ -68,7 +68,7 @@ fn main() {
     //
     // so we throw away the `cargo-do` and the `do`.
     let args = env::args();
-    let args = args.skip(2).collect::<Vec<_>>().connect(" ");
+    let args = args.skip(2).collect::<Vec<_>>().join(" ");
 
     for command in extract_commands(&args).iter() {
         let command: Vec<_> = command.split(' ').map(|s| s.trim()).collect();
