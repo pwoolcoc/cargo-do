@@ -1,8 +1,8 @@
 [package]
 
 name = "cargo-do"
-version = "0.3.1"
+version = "0.4.0"
 authors = ["Paul Woolcock <paul@woolcock.us>"]
 description = "A Cargo plugin that adds the 'do' subcommand to let you run multiple cargo commands by running e.g. `cargo do clean, build`"
-license = "MIT"
+license = "MIT/Apache-2.0"
 repository = "https://github.com/pwoolcoc/cargo-do"
