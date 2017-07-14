@@ -10,8 +10,13 @@ $ cargo do clean, update, build
 
 ## Installation
 
-I don't know if there is an "official" way to install Cargo subcommands,
-but the easiest way is to put the generated `cargo-do` binary in the same
+```
+cargo install cargo-do
+```
+
+### From Source
+
+Build the `cargo-do` binary and put it in the same
 directory as `cargo`. So, if you are on a *nix system, you could do the following:
 
 ```
